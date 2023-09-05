@@ -29,7 +29,7 @@ def send_verification_code():
         client = Client(twilio_settings.account_sid, twilio_settings.auth_token)
 
         # Create a verification service
-        verify = client.verify.services(twilio_settings.service_sid)
+        verify = client.verify.v2.services(twilio_settings.service_sid)
 
         # Send verification
         verify.verifications.create(to=to, channel='sms')
@@ -57,7 +57,7 @@ def verify_verification_code():
         client = Client(twilio_settings.account_sid, twilio_settings.auth_token)
 
         # Create a verification service
-        verify = client.verify.services(twilio_settings.service_sid)
+        verify = client.verify.v2.services(twilio_settings.service_sid)
 
         # Check verification
         result = verify.verification_checks.create(to=to, code=code)
