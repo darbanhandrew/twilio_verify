@@ -4,6 +4,7 @@ app_publisher = "Mohammad Darban Baran"
 app_description = "Verification for Twilio app"
 app_email = "darbanhandrew@gmail.com"
 app_license = "MIT"
+
 # required_apps = []
 
 # Includes in <head>
