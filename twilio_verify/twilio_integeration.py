@@ -25,7 +25,7 @@ def send_verification_code():
 
         twilio_settings = frappe.get_doc("Twilio Settings") # Replace "Twilio Settings Docname" with the actual document name
         # Initialize the Twilio client with settings from the document
-        client = Client(twilio_settings.data.account_sid, twilio_settings.auth_token)
+        client = Client(twilio_settings.account_sid, twilio_settings.auth_token)
 
         # Create a verification service
         verify = client.verify.v2.services(twilio_settings.service_sid)
@@ -54,10 +54,10 @@ def verify_verification_code():
         twilio_settings = frappe.get_doc("Twilio Settings")  # Replace "Twilio Settings Docname" with the actual document name
 
         # Initialize the Twilio client with settings from the document
-        client = Client(account_sid, auth_token)
+        client = Client(twilio_settings.account_sid, twilio_settings.auth_token)
 
         # Create a verification service
-        verify = client.verify.v2.services(service_sid)
+        verify = client.verify.v2.services(twilio_settings.service_sid)
 
         # Check verification
         result = verify.verification_checks.create(to=to, code=code)
