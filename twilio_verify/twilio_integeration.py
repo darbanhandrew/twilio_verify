@@ -23,13 +23,15 @@ def send_verification_code():
         to = frappe.form_dict.get("to")
 
         # Fetch Twilio settings from the "Twilio Settings" doctype
-        twilio_settings = frappe.get_doc("Twilio Settings", "Twilio Settings") # Replace "Twilio Settings Docname" with the actual document name
-
+        #twilio_settings = frappe.get_doc("Twilio Settings", "Twilio Settings") # Replace "Twilio Settings Docname" with the actual document name
+        account_sid = ACa3ac62593c2288e424ddf4d39be1f83d
+        auth_token = 5dda8539fb71057c4902376be62582fb
+        service_sid = VAc17f4a92ce3dbf91150e0fdd18c724a4
         # Initialize the Twilio client with settings from the document
-        client = Client(twilio_settings.account_sid, twilio_settings.auth_token)
+        client = Client(account_sid, auth_token)
 
         # Create a verification service
-        verify = client.verify.v2.services(twilio_settings.service_sid)
+        verify = client.verify.v2.services(service_sid)
 
         # Send verification
         verify.verifications.create(to=to, channel='sms')
@@ -51,13 +53,15 @@ def verify_verification_code():
         code = frappe.form_dict.get("code")
 
         # Fetch Twilio settings from the "Twilio Settings" doctype
-        twilio_settings = frappe.get_doc("Twilio Settings", "Twilio Settings")  # Replace "Twilio Settings Docname" with the actual document name
-
+        #twilio_settings = frappe.get_doc("Twilio Settings", "Twilio Settings")  # Replace "Twilio Settings Docname" with the actual document name
+        account_sid = ACa3ac62593c2288e424ddf4d39be1f83d
+        auth_token = 5dda8539fb71057c4902376be62582fb
+        service_sid = VAc17f4a92ce3dbf91150e0fdd18c724a4
         # Initialize the Twilio client with settings from the document
-        client = Client(twilio_settings.account_sid, twilio_settings.auth_token)
+        client = Client(account_sid, auth_token)
 
         # Create a verification service
-        verify = client.verify.v2.services(twilio_settings.service_sid)
+        verify = client.verify.v2.services(service_sid)
 
         # Check verification
         result = verify.verification_checks.create(to=to, code=code)
