@@ -24,9 +24,8 @@ def send_verification_code():
 
 
         twilio_settings = frappe.get_doc("Twilio Settings") # Replace "Twilio Settings Docname" with the actual document name
-
         # Initialize the Twilio client with settings from the document
-        client = Client(twilio_settings.account_sid, twilio_settings.auth_token)
+        client = Client(twilio_settings.data.account_sid, twilio_settings.auth_token)
 
         # Create a verification service
         verify = client.verify.v2.services(twilio_settings.service_sid)
@@ -39,7 +38,7 @@ def send_verification_code():
 
         return frappe.response.json({"status": "success", "url":verification.url, "message": _("Verification code sent successfully.")})
     except TwilioRestException as e:
-        return frappe.response.json({"status": "error", "message": _("Error sending verification code: {0}").format(str(e))}, status=500)
+        return frappe.response.json({"status": "error", "message": _("Error sending verification code: {0}").format(str(twilio_settings))}, status=500)
 
 
 
@@ -71,4 +70,4 @@ def verify_verification_code():
         else:
             return frappe.response.json({"status": "error", "message": _("Verification code not approved.")})
     except TwilioRestException as e:
-        return frappe.response.json({"status": "error", "message": _("Error checking verification code: {0}").format(str(e))}, status=500)
+        return frappe.response.json({"status": "error", "message": _("Error checking verification code: {0}").format(str(twilio_settings))}, status=500)
