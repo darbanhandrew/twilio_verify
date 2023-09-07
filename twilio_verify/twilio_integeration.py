@@ -22,11 +22,9 @@ def send_verification_code():
         # Get the phone number from the request
         to = frappe.form_dict.get("to")
 
-        # Fetch Twilio settings from the "Twilio Settings" doctype
-        #twilio_settings = frappe.get_doc("Twilio Settings", "Twilio Settings") # Replace "Twilio Settings Docname" with the actual document name
-        account_sid = ACa3ac62593c2288e424ddf4d39be1f83d
-        auth_token = 5dda8539fb71057c4902376be62582fb
-        service_sid = VAc17f4a92ce3dbf91150e0fdd18c724a4
+
+        twilio_settings = frappe.get_doc("Twilio Settings") # Replace "Twilio Settings Docname" with the actual document name
+
         # Initialize the Twilio client with settings from the document
         client = Client(account_sid, auth_token)
 
@@ -34,12 +32,12 @@ def send_verification_code():
         verify = client.verify.v2.services(service_sid)
 
         # Send verification
-        verify.verifications.create(to=to, channel='sms')
+        verification = verify.verifications.create(to=to, channel='sms')
 
         # Update the "phone_verified" field to False for the current user
         update_phone_verified_status(frappe.session.user, False)
 
-        return frappe.response.json({"status": "success", "message": _("Verification code sent successfully.")})
+        return frappe.response.json({"status": "success", "url":verification.url, "message": _("Verification code sent successfully.")})
     except TwilioRestException as e:
         return frappe.response.json({"status": "error", "message": _("Error sending verification code: {0}").format(str(e))}, status=500)
 
@@ -53,10 +51,9 @@ def verify_verification_code():
         code = frappe.form_dict.get("code")
 
         # Fetch Twilio settings from the "Twilio Settings" doctype
-        #twilio_settings = frappe.get_doc("Twilio Settings", "Twilio Settings")  # Replace "Twilio Settings Docname" with the actual document name
-        account_sid = ACa3ac62593c2288e424ddf4d39be1f83d
-        auth_token = 5dda8539fb71057c4902376be62582fb
-        service_sid = VAc17f4a92ce3dbf91150e0fdd18c724a4
+
+        twilio_settings = frappe.get_doc("Twilio Settings")  # Replace "Twilio Settings Docname" with the actual document name
+
         # Initialize the Twilio client with settings from the document
         client = Client(account_sid, auth_token)
 
